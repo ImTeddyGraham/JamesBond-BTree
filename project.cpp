@@ -121,7 +121,7 @@ class BinaryTree{
     }
     int recInsert(const T *a, int arrSize, node<T>**curr, int currIndex) {
         int size = 0;
-        if ((arrSize+1 < currIndex) || (a[currIndex-1] == '%')) {
+        if ((arrSize < currIndex) || (a[currIndex-1] == '%')) {
             return size;
         }
         
@@ -210,7 +210,12 @@ template<class T>
 class OmegaSeamaster {
   public:
     OmegaSeamaster() : BinaryTreeTemp(NULL) {}
-    //Note: Needs Assignment Operator and Copy Constructor Overloading
+    OmegaSeamaster(const OmegaSeamaster &x) :BinaryTreeTemp(NULL) {
+        BinaryTreeFunction = x.BinaryTreeFunction;
+    }
+    void operator=(const OmegaSeamaster &x) {
+        this->BinaryTreeFunction = x.BinaryTreeFunction;
+    }
     BinaryTree<T>  BinaryTreeFunction;
     BinaryTree<T>* BinaryTreeTemp;
     void Alarm(){
@@ -223,6 +228,8 @@ class OmegaSeamaster {
              << ":" << localtime(&t)->tm_sec << endl;
     }
     void CleanTemp(){
+        delete BinaryTreeTemp;
+        BinaryTreeTemp = NULL;
     }
     void Draw(){
         cout << "                           ||||                           \n";
@@ -240,8 +247,9 @@ class OmegaSeamaster {
         cout << "                   /\\   /            /\\                   \n";
         cout << "                   \\/  /    ||       \\/                   \n";
         cout << "                            ||                            " << endl;
-    } 
+    }
     ~OmegaSeamaster(){
+        CleanTemp();
     }
 };
 
