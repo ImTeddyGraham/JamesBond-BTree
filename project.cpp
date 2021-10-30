@@ -119,6 +119,54 @@ class BinaryTree{
         cout << "Total Inserted: "  << this->size << endl;
         #endif
     }
+    void genFromINandPOST(node<T> **rooty, string in, string post) {
+        T temp;
+        size_t found = string::npos;
+        while (found == string::npos) {
+            if (post.length() == 0) {
+                this->DeleteTree(rooty);
+                return;
+            }
+            if (rooty == NULL){
+                rooty = &(this->root);
+                *rooty = new node<T>;
+            }
+            temp = post.back();
+            post.pop_back();
+            found = in.find_last_of(temp);
+        }
+        **rooty = temp;
+        string left = in.substr(0, found);
+        string right = in.substr(found);
+        (*rooty)->left = new node<T>;
+        genFromINandPOST(&((*rooty)->left), left, post);
+        (*rooty)->right = new node<T>;
+        genFromINandPOST(&((*rooty)->right), right, post);
+    }
+    void genFromINandPRE(node<T> **rooty, string in, string pre) {
+        T temp;
+        size_t found = string::npos;
+        while (found == string::npos) {
+            if (pre.length() == 0) {
+                this->DeleteTree(rooty);
+                return;
+            }
+            if (rooty == NULL){
+                rooty = &(this->root);
+                *rooty = new node<T>;
+            }
+            temp = pre[0];
+            pre.erase(0,1);
+            found = in.find_first_of(temp);
+        }
+        **rooty = temp;
+        string left = in.substr(0, found);
+        string right = in.substr(found);
+        (*rooty)->left = new node<T>;
+        genFromINandPRE(&((*rooty)->left), left, pre);
+        (*rooty)->right = new node<T>;
+        genFromINandPRE(&((*rooty)->right), right, pre);
+    }
     int recInsert(const T *a, int arrSize, node<T>**curr, int currIndex) {
         int size = 0;
         if ((arrSize < currIndex) || (a[currIndex-1] == '%')) {
